@@ -1,4 +1,5 @@
 import '@nomicfoundation/hardhat-toolbox';
+import 'hardhat-deploy';
 import * as dotenv from 'dotenv';
 import { HardhatUserConfig } from 'hardhat/types';
 import './tasks/deploySpender';

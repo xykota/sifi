@@ -10,8 +10,10 @@
   },
   "scripts": {
     "build": "npx hardhat compile",
+    "forge-build": "forge build",
     "lint": "solhint 'contracts/**/*.sol'",
-    "test": "hardhat test && forge test --ffi"
+    "test": "hardhat test && forge test --ffi",
+    "forge-test": "forge test --ffi -vvv"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.1",

@@ -59,8 +59,21 @@ jobs:
         if: ${{ env.MAINNET_RPC_URL != null }}
         run: pnpm -C packages/hardhat test
 
+      - name: Build Foundry
+        run: pnpm -C packages/hardhat forge-build
+
       - name: Test foundry
-        env:
-          RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
-        if: ${{ env.MAINNET_RPC_URL != null }}
-        run: pnpm -C packages/hardhat forge test -vv
+        run: pnpm -C packages/hardhat forge-test
+
+      - name: Slither static vulnerability analysis
+        uses: crytic/slither-action@v0.3.0
+        id: slither
+        with:
+          sarif: results.sarif
+          fail-on: none
+          solc-version: 0.8.21
+
+      - name: Upload Slither SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ steps.slither.outputs.sarif }}

@@ -45,7 +45,7 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
 
       - name: Build
-        run: pnpm build
+        run: pnpm -C packages/hardhat build
 
       # - name: Lint
       #   run: pnpm lint

@@ -65,15 +65,24 @@ jobs:
       - name: Test foundry
         run: pnpm -C packages/hardhat forge-test
 
-      - name: Slither static vulnerability analysis
-        uses: crytic/slither-action@v0.3.0
-        id: slither
+      # Add Python 3 for Slither
+      - uses: actions/setup-python@v4
         with:
-          sarif: results.sarif
-          fail-on: none
-          solc-version: 0.8.21
+          python-version: '3.10'
+
+      - name: Install Slither
+        run: |
+          pip install slither-analyzer
+          slither --version
+
+      - name: Install solc v0.8.21
+        run: |
+          curl -L https://binaries.soliditylang.org/linux-amd64/solc-linux-amd64-v0.8.21+commit.d9974bed -o /usr/local/bin/solc
+
+      - name: Slither static vulnerability analysis
+        run: pnpm -C packages/hardhat slither
 
       - name: Upload Slither SARIF file
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: ${{ steps.slither.outputs.sarif }}
+          sarif_file: packages/hardhat/slither.sarif

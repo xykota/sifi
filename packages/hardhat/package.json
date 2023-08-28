@@ -13,7 +13,8 @@
     "forge-build": "forge build",
     "lint": "solhint 'contracts/**/*.sol'",
     "test": "hardhat test && forge test --ffi",
-    "forge-test": "forge test --ffi -vvv"
+    "forge-test": "forge test --ffi -vvv",
+    "slither": "slither ."
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.1",

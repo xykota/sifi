@@ -1,5 +1,10 @@
 name: Node.js CI
 
+permissions:
+  id-token: write
+  contents: write # Checkout
+  security-events: write # Upload Sarif
+
 on:
   push:
   pull_request:
@@ -9,6 +14,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Slither
+        run: |
+          pip install slither-analyzer
+          slither --version
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -45,7 +59,7 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
 
       - name: Build
-        run: pnpm -C packages/hardhat build
+        run: pnpm build -C packages/hardhat
 
       # - name: Lint
       #   run: pnpm lint
@@ -59,23 +73,13 @@ jobs:
       #   if: ${{ env.MAINNET_RPC_URL != null }}
       #   run: pnpm -C packages/hardhat test
 
-      - name: Build Foundry
-        run: pnpm -C packages/hardhat forge-build
+      # - name: Build Foundry
+      #   run: pnpm -C packages/hardhat forge-build
 
       # - name: Test foundry
       #   run: pnpm -C packages/hardhat forge-test
 
-      # Add Python 3 for Slither
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Install Slither
-        run: |
-          pip install slither-analyzer
-          slither --version
-
-      - name: Slither static vulnerability analysis
+      - name: Slither analyze
         run: pnpm -C packages/hardhat slither || true
 
       - name: Upload Slither SARIF file

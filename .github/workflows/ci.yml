@@ -59,7 +59,7 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
 
       - name: Build
-        run: pnpm build -C packages/hardhat
+        run: pnpm -C packages/hardhat build
 
       # - name: Lint
       #   run: pnpm lint
@@ -83,6 +83,9 @@ jobs:
         run: pnpm -C packages/hardhat slither || true
 
       - name: Upload Slither SARIF file
+        # Only upload the SARIF file if the repository is sideshiftfi/sifi
+        # since this cannot be run in private repos
+        if: github.repository == 'sideshiftfi/sifi'
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: packages/hardhat/slither.sarif

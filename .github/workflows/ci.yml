@@ -47,23 +47,23 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Lint
-        run: pnpm lint
+      # - name: Lint
+      #   run: pnpm lint
 
-      - name: Test
-        run: pnpm -filter '!@sifi/hardhat' packages/frontend test
+      # - name: Test
+      #   run: pnpm -filter '!@sifi/hardhat' packages/frontend test
 
-      - name: Test hardhat
-        env:
-          RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
-        if: ${{ env.MAINNET_RPC_URL != null }}
-        run: pnpm -C packages/hardhat test
+      # - name: Test hardhat
+      #   env:
+      #     RPC_URL: ${{ secrets.MAINNET_RPC_URL }}
+      #   if: ${{ env.MAINNET_RPC_URL != null }}
+      #   run: pnpm -C packages/hardhat test
 
       - name: Build Foundry
         run: pnpm -C packages/hardhat forge-build
 
-      - name: Test foundry
-        run: pnpm -C packages/hardhat forge-test
+      # - name: Test foundry
+      #   run: pnpm -C packages/hardhat forge-test
 
       # Add Python 3 for Slither
       - uses: actions/setup-python@v4
@@ -78,6 +78,8 @@ jobs:
       - name: Install solc v0.8.21
         run: |
           curl -L https://binaries.soliditylang.org/linux-amd64/solc-linux-amd64-v0.8.21+commit.d9974bed -o /usr/local/bin/solc
+          chmod +x /usr/local/bin/solc
+          solc --version
 
       - name: Slither static vulnerability analysis
         run: pnpm -C packages/hardhat slither

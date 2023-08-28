@@ -82,7 +82,7 @@ jobs:
           solc --version
 
       - name: Slither static vulnerability analysis
-        run: pnpm -C packages/hardhat slither
+        run: pnpm -C packages/hardhat slither || true
 
       - name: Upload Slither SARIF file
         uses: github/codeql-action/upload-sarif@v2

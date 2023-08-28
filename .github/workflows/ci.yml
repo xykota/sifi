@@ -75,12 +75,6 @@ jobs:
           pip install slither-analyzer
           slither --version
 
-      - name: Install solc v0.8.21
-        run: |
-          curl -L https://binaries.soliditylang.org/linux-amd64/solc-linux-amd64-v0.8.21+commit.d9974bed -o /usr/local/bin/solc
-          chmod +x /usr/local/bin/solc
-          solc --version
-
       - name: Slither static vulnerability analysis
         run: pnpm -C packages/hardhat slither || true
 
